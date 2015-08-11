@@ -16,20 +16,26 @@ end
 while(1) do
   begin
     status = Timeout::timeout(30) do
+      puts 'Generating rhyme'
       sentence_gen = Hploveraps::Sentence.new(syllables: 10)
+      output = ''
 
       sentence_gen.generate_rhyme
 
-      puts sentence_gen.sentence
-      puts sentence_gen.rhyme
-
+      output += %Q|#{sentence_gen.sentence}\n|
+      output += %Q|#{sentence_gen.rhyme}\n|
       sentence_gen.generate_rhyme
-      puts sentence_gen.rhyme
 
-      puts
+      output += %Q|#{sentence_gen.rhyme}\n|
+
+      File.open("./rhymes/lovecraft-#{Time.now.to_f}.txt", 'w') do |f|
+        f.write output
+      end
+
+      puts 'Rhyme generated!'
     end
   rescue => e
-    # puts e.inspect
+    puts e.inspect
     puts 'trying again'
   end
 end

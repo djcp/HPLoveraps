@@ -60,9 +60,9 @@ module Hploveraps
     def does_not_end_in_lame_word(sentence)
       last_word = normalize_last_word(sentence)
 
-      ! %w|a an the and or|.include?(last_word) ||
-        last_word.match(/\d$/) ||
-        ! last_word.to_phrase.dict?
+      ! %w|a an the and or|.include?(last_word) &&
+        ! last_word.match(/\d$/) &&
+        last_word.to_phrase.dict?
     end
 
     def count_syllables(word)
